@@ -38,9 +38,7 @@ function createDiv(className) {
     return div;
 }
 
-function elementExists(className) {
-    console.log(document.querySelector(`.${className}`));
-    
+function elementExists(className) { 
     return document.querySelector(`.${className}`) ? true : false;
 }
 
@@ -57,7 +55,6 @@ function getArrPrimeNumsTo(num) {
         }
         if (prime) arr.push(i);
     }
-    console.log(arr);
     return arr; 
 }
 
