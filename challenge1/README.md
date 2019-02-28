@@ -17,5 +17,3 @@ N = 10 – 2, 3, 5, 7
 – Jeśli użytkownik poda nieprawidłowe N (na przykład wpisze "lol" albo -42) to skrypt powinien wyświetlić informację o błędzie
 – Oceniane będą: Prawidłowa odpowiedź, obsługa błędów, czytelność kodu
 – Wydajność rozwiązania nie będzie oceniana
-
-Rozwiązania wrzucamy na Codepen / jsfiddle / plnkr / jsbin, a następnie pod tym wydarzeniem dodajemy posta z linkiem i może krótkim komentarzem co do kodu :) Nie sądzę, abym dał radę przejrzeć wszystko osobiście, ale grupa jest liczna i na pewno znajdzie się więcej osób chętnych do wzajemnej pomocy.
