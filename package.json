@@ -1,12 +1,12 @@
 {
-  "name": "snake",
+  "name": "weekly-js-challenge",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "watch": "webpack --watch",
-    "start:dev": "webpack-dev-server --env.challengeNum=1 --mode=development --open",
-    "start:prod": "webpack-dev-server --env.challengeNum=1 --mode=production --open"
+    "start:dev": "webpack-dev-server --env.challengeNum=2 --mode=development --open",
+    "start:prod": "webpack-dev-server --env.challengeNum=2 --mode=production --open"
   },
   "keywords": [],
   "author": "",
