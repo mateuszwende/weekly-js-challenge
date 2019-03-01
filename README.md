@@ -4,7 +4,7 @@ A collection of tasks created by Michał Miszczyszyn at facebook group [Weekly J
 
 ## Getting Started
 
-First, edit package.json file by setting the number of the challenge
+First, edit package.json file by setting the number of the challenge. The default is 1.
 
 ```
 "start:dev": "webpack-dev-server --env.challengeNum=1 --mode=development --open"
