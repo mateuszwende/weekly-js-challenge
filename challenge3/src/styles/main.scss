@@ -1,0 +1,96 @@
+$background: #367bf9;
+$main-color: white;
+$input-color: black;
+
+body {
+    background: $background;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 24px; 
+    color: $main-color; 
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    margin: 0 15px;
+}
+
+form {
+    .container {
+        margin: 10px 0;
+        padding: 15px;
+        background: #e0c600;
+    }
+
+    .inner-container {
+        display: flex;
+        align-items: stretch;
+
+        &__block {
+            padding: 15px;
+        }
+    }
+
+    .middle-container {
+        display: flex;
+        align-items: stretch;
+        padding: 15px;
+    }
+
+    .input-container {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+
+        label {
+            font-size: 16px;
+            color: black;
+        }
+
+        input {
+            width: 300px;
+            background: #fcfcfc;
+            margin: 2px 0;
+            padding: 5px;
+        }
+    }
+
+    .radio-input-container {
+        float: left;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 5px;
+        margin: 15px 0 0;
+
+        label {
+            font-size: 12px;
+            color: black;
+        }
+
+        input {
+            box-shadow: none;
+        }
+    }
+
+    .error {
+        width: 300px;
+        background: #c42121;
+        border: 1px solid red;
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+
+}
+
+input {
+    color: $input-color;
+    font-family: inherit;
+    border: none;
+    outline: none;
+    box-shadow: 0px 0px 1px 1px $input-color inset;
+}
+
+.hidden {
+    display: none;
+}
