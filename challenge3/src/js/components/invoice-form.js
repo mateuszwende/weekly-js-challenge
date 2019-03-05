@@ -1,5 +1,4 @@
-import { Element } from '../lib/element';
-import { Input } from '../lib/input';
+import { createInput, createElement } from '../lib/dom';
 import { debounce } from '../lib/debounce';
 import { InvoiceData }  from './invoice-data';
 import { invoiceInputsConfig } from './invoice-inputs.config';
@@ -8,27 +7,32 @@ import { Validator } from '../lib/validator';
 export class InvoiceForm { 
     constructor(params = {}) {
         this.parent = params.parent || document.body;
-        this.form = new Element('form');
+        this.form = createElement('form');
         this.textInputs = null;
         this.radioInputs = null;
         this.validator = new Validator();
         this.data = new InvoiceData();
-        
+
         this.init();
     }
 
     init() {
         this.createInputs();
-        this.textInputs = [...this.form.element.querySelectorAll('input[type="text"]')];
-        this.radioInputs = [...this.form.element.querySelectorAll('input[type="radio"]')];
-        this.parent.appendChild(this.form.element);
+        this.textInputs = [...this.form.querySelectorAll('input[type="text"]')];
+        this.radioInputs = [...this.form.querySelectorAll('input[type="radio"]')];
+        this.parent.appendChild(this.form);
         this.data.writeDataToTextInputs(this.textInputs);
         this.data.writeDataToRadioInputs(this.radioInputs);
     }
     
     saveTextInput(e) {
         if (this.canSaveValue(e.target)) {
-            this.data.saveTextInput(e.target);
+            try {
+                this.data.saveTextInput(e.target);
+            }
+            catch(error) {
+                console.error(error);         
+            }
         } 
     }
 
@@ -70,9 +74,9 @@ export class InvoiceForm {
     }
 
     createInputs() {
-        const container = new Element('div', 'container');
-        const innerContainerTop = new Element('div', 'inner-container');
-        const innerContainerBottom = new Element('div', 'inner-container');
+        const container = createElement('div', 'container');
+        const innerContainerTop = createElement('div', 'inner-container');
+        const innerContainerBottom = createElement('div', 'inner-container');
         const innerContainerBlockLeft = document.createDocumentFragment();
         const innerContainerBlockRight = document.createDocumentFragment();
         const innerContainerBottomLeft = document.createDocumentFragment();
@@ -108,77 +112,77 @@ export class InvoiceForm {
             }
         }
 
-        innerContainerTop.element.appendChild(
+        innerContainerTop.appendChild(
             this.wrapped({elem: innerContainerBlockLeft, className: 'inner-container__block'}));
-        innerContainerTop.element.appendChild(
+        innerContainerTop.appendChild(
             this.wrapped({elem: innerContainerBlockRight, className: 'inner-container__block'}));
 
-        innerContainerBottom.element.appendChild(
+        innerContainerBottom.appendChild(
             this.wrapped({elem: innerContainerBottomLeft, className: 'inner-container__block'}));
-        innerContainerBottom.element.appendChild(
+        innerContainerBottom.appendChild(
             this.wrapped({elem: innerContainerBottomRight, className: 'inner-container__block'}))
 
-        container.element.appendChild(innerContainerTop.element);
-        container.element.appendChild(innerContainerBottom.element);
+        container.appendChild(innerContainerTop);
+        container.appendChild(innerContainerBottom);
 
-        this.form.element.appendChild(container.element);
+        this.form.appendChild(container);
     }
 
     createTextInput(params = {}) {
-        const container = new Element('div', 'input-container');
+        const container = createElement('div', 'input-container');
 
         const label = this.createLabel(params.labelName);
-        const input = Input({ type: params.type, name: params.name });
+        const input = createInput({ type: params.type, name: params.name });
         input.dataset['validation'] = params.validation;
 
-        const errorMsg = this.createErrorMsg(params.errorMsg, ['error', 'hidden']);
+        const errorMsg = this.createErrorMsg(params.errorMsg, 'error hidden');
 
         input.addEventListener('keyup', 
             debounce(this.saveTextInput.bind(this), 500)
         );
 
-        container.element.appendChild(label.element);
-        container.element.appendChild(input);
-        container.element.appendChild(errorMsg.element);
+        container.appendChild(label);
+        container.appendChild(input);
+        container.appendChild(errorMsg);
         
-        return container.element;
+        return container;
     }
 
     createRadioInput(params = {}) {
-        const container = new Element('div', 'radio-input-container');
+        const container = createElement('div', 'radio-input-container');
 
         const label = this.createLabel(params.labelName);
-        const input = Input({type: params.type, name: params.name});
+        const input = createInput({type: params.type, name: params.name});
         input.value = params.value;
 
         input.addEventListener('change', 
             debounce(this.saveRadioInput.bind(this), 500)
         );
 
-        container.element.appendChild(label.element);
-        container.element.appendChild(input);
+        container.appendChild(label);
+        container.appendChild(input);
 
-        return container.element;
+        return container;
     }
 
     createLabel(textContent) {
-        const label = new Element('label');
-        label.element.textContent = textContent;
+        const label = createElement('label');
+        label.textContent = textContent;
 
         return label;
     }
 
     createErrorMsg(msg, classNames) {
-        const errorMsg = new Element('div', classNames);
-        errorMsg.element.textContent = msg;
+        const errorMsg = createElement('div', classNames);
+        errorMsg.textContent = msg;
 
         return errorMsg;
     }
 
     wrapped(params = {}) {
-        const container = new Element('div', params.className);
-        container.element.appendChild(params.elem);
+        const container = createElement('div', params.className);
+        container.appendChild(params.elem);
 
-        return container.element;
+        return container;
     }
 }

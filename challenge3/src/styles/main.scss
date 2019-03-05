@@ -1,6 +1,8 @@
-$background: #367bf9;
+$background: #fafafa;
 $main-color: white;
+$form-background: rgba(0, 0, 0, 0.85);
 $input-color: black;
+$label-color: #20C20E;
 
 body {
     background: $background;
@@ -19,12 +21,16 @@ form {
     .container {
         margin: 10px 0;
         padding: 15px;
-        background: #e0c600;
+        background: $form-background;
     }
 
     .inner-container {
         display: flex;
         align-items: stretch;
+
+        @media only screen and (max-width: 800px)  {
+            flex-direction: column;
+        }
 
         &__block {
             padding: 15px;
@@ -44,7 +50,7 @@ form {
 
         label {
             font-size: 16px;
-            color: black;
+            color: $label-color;
         }
 
         input {
@@ -65,7 +71,7 @@ form {
 
         label {
             font-size: 12px;
-            color: black;
+            color: $label-color;
         }
 
         input {
