@@ -7,28 +7,40 @@ import { Validator } from '../lib/validator';
 export class InvoiceForm { 
     constructor(params = {}) {
         this.parent = params.parent || document.body;
-        this.form = createElement('form');
+        this.form = null;
         this.textInputs = null;
         this.radioInputs = null;
+        this.modificationDateElem = null;
         this.validator = new Validator();
         this.data = new InvoiceData();
-
+        
         this.init();
     }
 
     init() {
-        this.createInputs();
+        this.form = this.createForm();
+        this.form.appendChild(this.createInputs());
+        this.form.appendChild(this.createModificationDateElement());
+        this.parent.appendChild(this.form);  
+
         this.textInputs = [...this.form.querySelectorAll('input[type="text"]')];
         this.radioInputs = [...this.form.querySelectorAll('input[type="radio"]')];
-        this.parent.appendChild(this.form);
+        this.modificationDateElem = this.form.querySelector('.modification-date-js');
+
+        this.fillFormWithStoredData();
+    }
+
+    fillFormWithStoredData() {
         this.data.writeDataToTextInputs(this.textInputs);
         this.data.writeDataToRadioInputs(this.radioInputs);
+        this.data.writeModificationDate(this.modificationDateElem);
     }
     
     saveTextInput(e) {
         if (this.canSaveValue(e.target)) {
             try {
                 this.data.saveTextInput(e.target);
+                this.data.writeModificationDate(this.modificationDateElem);
             }
             catch(error) {
                 console.error(error);         
@@ -38,6 +50,7 @@ export class InvoiceForm {
 
     saveRadioInput(e) {
         this.data.saveRadioInput(e.target);
+        this.data.writeModificationDate(this.modificationDateElem);
     }
 
     canSaveValue(input) {
@@ -74,7 +87,7 @@ export class InvoiceForm {
     }
 
     createInputs() {
-        const container = createElement('div', 'container');
+        const container = document.createDocumentFragment();
         const innerContainerTop = createElement('div', 'inner-container');
         const innerContainerBottom = createElement('div', 'inner-container');
         const innerContainerBlockLeft = document.createDocumentFragment();
@@ -125,11 +138,11 @@ export class InvoiceForm {
         container.appendChild(innerContainerTop);
         container.appendChild(innerContainerBottom);
 
-        this.form.appendChild(container);
+        return container;
     }
 
     createTextInput(params = {}) {
-        const container = createElement('div', 'input-container');
+        const container = createElement('fieldset', 'input-container');
 
         const label = this.createLabel(params.labelName);
         const input = createInput({ type: params.type, name: params.name });
@@ -149,7 +162,7 @@ export class InvoiceForm {
     }
 
     createRadioInput(params = {}) {
-        const container = createElement('div', 'radio-input-container');
+        const container = createElement('fieldset', 'radio-input-container');
 
         const label = this.createLabel(params.labelName);
         const input = createInput({type: params.type, name: params.name});
@@ -165,6 +178,17 @@ export class InvoiceForm {
         return container;
     }
 
+    createModificationDateElement() {
+        const innerContainer = createElement('div', 'inner-container');
+        const innerContainerBlock = createElement('div', 'inner-container__block');
+        const span = createElement('span', 'modification-date modification-date-js');
+
+        innerContainerBlock.appendChild(span);
+        innerContainer.appendChild(innerContainerBlock);
+
+        return innerContainer;
+    }
+
     createLabel(textContent) {
         const label = createElement('label');
         label.textContent = textContent;
@@ -177,6 +201,11 @@ export class InvoiceForm {
         errorMsg.textContent = msg;
 
         return errorMsg;
+    }
+
+    createForm() {
+        const form = createElement('form', 'invoice-form');
+        return form;
     }
 
     wrapped(params = {}) {

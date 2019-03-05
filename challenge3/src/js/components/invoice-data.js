@@ -1,23 +1,25 @@
 import { InvoiceStorage } from "./invoice-storage";
+import { composeDateStr } from '../lib/utils';
 
 export class InvoiceData { 
     constructor(storedData) {
         this.storage = new InvoiceStorage();
         this.data = {
-            customerName: '',
-            customerSurname: '',
-            customerCity: '',
-            customerStreet: '',
-            customerStrNumber: '',
-            customerPostcode: '',
-            companyName: '',
-            companyNIP: '',
-            companyCity: '',
-            companyStreet: '',
-            companyStrNumber: '',
-            companyPostcode: '',
-            payment: '',
-            paymentStatus: ''
+            customerName: null,
+            customerSurname: null,
+            customerCity: null,
+            customerStreet: null,
+            customerStrNumber: null,
+            customerPostcode: null,
+            companyName: null,
+            companyNIP: null,
+            companyCity: null,
+            companyStreet: null,
+            companyStrNumber: null,
+            companyPostcode: null,
+            payment: null,
+            paymentStatus: null,
+            modificationDate: null
         }
 
         this.getDataFromStorage(this.storage.readData()); 
@@ -61,11 +63,26 @@ export class InvoiceData {
                 this.data[prop] = input.value;
             }
         }
-        this.storage.saveData(this.data); 
+
+        this.saveLastUpdateDate();
+        this.storage.saveData(this.data);
+
     }
 
     saveRadioInput(input) {
         this.data['paymentStatus'] = input.value;
-        this.storage.saveData(this.data);
+
+        this.saveLastUpdateDate();
+        this.storage.saveData(this.data);    
+    }
+
+    saveLastUpdateDate() {
+        this.data['modificationDate'] = new Date();
+    }
+
+    writeModificationDate(elem) {
+        const date = new Date(this.data['modificationDate']);
+
+        elem.textContent = `Recently modified: ${composeDateStr(date)}`;
     }
 }

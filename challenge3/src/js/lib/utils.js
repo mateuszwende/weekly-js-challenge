@@ -12,3 +12,12 @@ export function capitalize(str) {
             .map((letter, i) => i === 0 ? letter.toUpperCase() : letter)
             .join("");
 }
+
+export function composeDateStr(date) {
+    const day = date.getDay() < 10 ? `0${date.getDay()}` : date.getDay();
+    const month = date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth();
+    const dateStr = `${day}.${month}.${date.getFullYear()}`;
+    const timeStr = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    
+    return `${dateStr}, ${timeStr}`;
+}
