@@ -64,7 +64,7 @@ export class InvoiceData {
             }
         }
 
-        this.saveLastUpdateDate();
+        this.saveModificationDate();
         this.storage.saveData(this.data);
 
     }
@@ -72,11 +72,11 @@ export class InvoiceData {
     saveRadioInput(input) {
         this.data['paymentStatus'] = input.value;
 
-        this.saveLastUpdateDate();
+        this.saveModificationDate();
         this.storage.saveData(this.data);    
     }
 
-    saveLastUpdateDate() {
+    saveModificationDate() {
         this.data['modificationDate'] = new Date();
     }
 
