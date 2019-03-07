@@ -83,7 +83,7 @@ export class InvoiceForm {
         else if (input.dataset.validation === 'postcode') {
             return this.validator.isPostcodeValid(input.value);
         }
-        return false;
+        return true;
     }
 
     createInputs() {
