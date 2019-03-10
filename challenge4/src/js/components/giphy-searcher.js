@@ -51,7 +51,7 @@ export class GiphySearcher {
 
     validateResponse(res) {
         if (!res.ok) {
-            this.appendServerErrToDom();
+            this.showServerErrMsg();
             throw Error(res.statusText);
         }
         return res;
@@ -63,7 +63,7 @@ export class GiphySearcher {
 
     displayGifs(json) {
         if (isEmptyArr(json['data'])) {
-            this.appendNotFoundToDOM();
+            this.showNotFoundMsg();
         }
         else {
             removeAllChilds(this.gifsContainer);
@@ -81,7 +81,31 @@ export class GiphySearcher {
 
     handleFetchError(err) {
         console.error(err);
-        this.appendSearchErrorToDOM();
+        this.showSearchErrorMsg();
+    }
+
+    showSearchErrorMsg() {
+        const errorMsg = createElement('div', 'search-error');
+        errorMsg.textContent = "Oops, something went wrong, please try again.";
+
+        removeAllChilds(this.gifsContainer);
+        this.gifsContainer.appendChild(errorMsg);
+    }
+
+    showNotFoundMsg() {
+        const notFoundMsg = createElement('div', 'search-404');
+        notFoundMsg.textContent = "No GIFs found. Please, try another phrase.";
+
+        removeAllChilds(this.gifsContainer);
+        this.gifsContainer.appendChild(notFoundMsg);
+    }
+
+    showServerErrMsg() {
+        const serverErrMsg = createElement('div', 'server-error');
+        serverErrMsg.textContent = "It seems like the server doesn't respond. This might be due to server maintanance. Please try again in a moment.";
+
+        removeAllChilds(this.gifsContainer);
+        this.gifsContainer.appendChild(serverErrMsg);
     }
 
     handlePhraseQuery(phrase) {
@@ -113,30 +137,6 @@ export class GiphySearcher {
         container.appendChild(video);
 
         return container;
-    }
-
-    appendSearchErrorToDOM() {
-        const errorMsg = createElement('div', 'search-error');
-        errorMsg.textContent = "Oops, something went wrong, please try again.";
-
-        removeAllChilds(this.gifsContainer);
-        this.gifsContainer.appendChild(errorMsg);
-    }
-
-    appendNotFoundToDOM() {
-        const notFoundMsg = createElement('div', 'search-404');
-        notFoundMsg.textContent = "No GIFs found. Please, try another phrase.";
-
-        removeAllChilds(this.gifsContainer);
-        this.gifsContainer.appendChild(notFoundMsg);
-    }
-
-    appendServerErrToDom() {
-        const serverErrMsg = createElement('div', 'server-error');
-        serverErrMsg.textContent = "It seems like the server doesn't respond. This might be due to server maintanance. Please try again in a moment.";
-
-        removeAllChilds(this.gifsContainer);
-        this.gifsContainer.appendChild(serverErrMsg);
     }
 
     createTitle() {
