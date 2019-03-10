@@ -18,7 +18,7 @@ export class InvoiceData {
             companyStrNumber: null,
             companyPostcode: null,
             payment: null,
-            paymentStatus: null,
+            status: null,
             modificationDate: null
         }
 
@@ -27,40 +27,39 @@ export class InvoiceData {
 
     getDataFromStorage(storedData) {
         if (storedData) {
-            for (let prop in this.data) {
-                for (let storedDataProp in storedData) {
-                    if (prop === storedDataProp) {
-                        this.data[prop] = storedData[storedDataProp];
+            for (const key in this.data) {
+                for (const storedDataKey in storedData) {
+                    if (key === storedDataKey) {
+                        this.data[key] = storedData[storedDataKey];
                     }
                 }
             }
         }
-    } 
-
-    writeDataToTextInputs(inputs) {
-        for (let prop in this.data) {
+    }
+    
+    writeDataToInputs(inputs) {
+        for (const key in this.data) {
             for (let i = 0; i < inputs.length; i++) {
-                if (prop === inputs[i].name) {
-                    inputs[i].value = this.data[prop];
+                if (inputs[i].type === 'radio') {
+                    if (inputs[i].value === this.data[key]) {
+                        inputs[i].checked = true;
+                        break;
+                    }
                 }
+                else {
+                    if (inputs[i].name === key) {
+                        inputs[i].value = this.data[key];
+                        break;
+                    }   
+                }   
             }
         }
     }
 
-    writeDataToRadioInputs(inputs) {
-        for (let prop in this.data) {
-            for (let i = 0; i < inputs.length; i++) {
-                if (inputs[i].value === this.data[prop]) {
-                    inputs[i].checked = true;
-                }
-            }
-        }
-    }
-
-    saveTextInput(input) {
-        for (let prop in this.data) { 
-            if (prop === input.name) {      
-                this.data[prop] = input.value;
+    saveInput(input) {
+        for (const key in this.data) { 
+            if (key === input.name) {      
+                this.data[key] = input.value;
             }
         }
 
@@ -70,7 +69,7 @@ export class InvoiceData {
     }
 
     saveRadioInput(input) {
-        this.data['paymentStatus'] = input.value;
+        this.data['status'] = input.value;
 
         this.saveModificationDate();
         this.storage.saveData(this.data);    

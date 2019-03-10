@@ -8,8 +8,7 @@ export class InvoiceForm {
     constructor(params = {}) {
         this.parent = params.parent || document.body;
         this.form = null;
-        this.textInputs = null;
-        this.radioInputs = null;
+        this.inputs = null;
         this.modificationDateElem = null;
         this.validator = new Validator();
         this.data = new InvoiceData();
@@ -23,29 +22,22 @@ export class InvoiceForm {
         this.form.appendChild(this.createModificationDateElement());
         this.parent.appendChild(this.form);  
 
-        this.textInputs = [...this.form.querySelectorAll('input[type="text"]')];
-        this.radioInputs = [...this.form.querySelectorAll('input[type="radio"]')];
+        this.inputs = [...this.form.querySelectorAll('input')];
         this.modificationDateElem = this.form.querySelector('.modification-date-js');
 
         this.fillFormWithStoredData();
     }
 
     fillFormWithStoredData() {
-        this.data.writeDataToTextInputs(this.textInputs);
-        this.data.writeDataToRadioInputs(this.radioInputs);
+        this.data.writeDataToInputs(this.inputs);
         this.data.writeModificationDate(this.modificationDateElem);
     }
     
-    saveTextInput(e) {
+    saveInput(e) {
         if (this.canSaveValue(e.target)) {
-            try {
-                this.data.saveTextInput(e.target);
-                this.data.writeModificationDate(this.modificationDateElem);
-            }
-            catch(error) {
-                console.error(error);         
-            }
-        } 
+            this.data.saveInput(e.target);
+            this.data.writeModificationDate(this.modificationDateElem); 
+        }      
     }
 
     saveRadioInput(e) {
@@ -95,31 +87,31 @@ export class InvoiceForm {
         const innerContainerBottomLeft = document.createDocumentFragment();
         const innerContainerBottomRight = document.createDocumentFragment();
 
-        for (let prop in invoiceInputsConfig) {
+        for (const key in invoiceInputsConfig) {
 
-            if (prop === 'customer') {
-                for (let customerProp in invoiceInputsConfig[prop]) {
+            if (key === 'customer') {
+                for (const customerKey in invoiceInputsConfig[key]) {
                     innerContainerBlockLeft.appendChild(
-                        this.createTextInput(invoiceInputsConfig[prop][customerProp]) 
+                        this.createInput(invoiceInputsConfig[key][customerKey]) 
                     )
                 }
             }
-            else if (prop === 'company') {
-                for (let companyProp in invoiceInputsConfig[prop]) {
+            else if (key === 'company') {
+                for (const companyKey in invoiceInputsConfig[key]) {
                     innerContainerBlockRight.appendChild(
-                        this.createTextInput(invoiceInputsConfig[prop][companyProp]) 
+                        this.createInput(invoiceInputsConfig[key][companyKey]) 
                     )
                 }
             }
-            else if (prop === 'payment') {
+            else if (key === 'payment') {
                 innerContainerBottomLeft.appendChild(
-                    this.createTextInput(invoiceInputsConfig[prop])
+                    this.createInput(invoiceInputsConfig[key])
                 )
             }
-            else if (prop === 'status') {
-                for (let statusProp in invoiceInputsConfig[prop]) {
+            else if (key === 'status') {
+                for (const statusKey in invoiceInputsConfig[key]) {
                     innerContainerBottomRight.appendChild(
-                        this.createRadioInput(invoiceInputsConfig[prop][statusProp]) 
+                        this.createRadioInput(invoiceInputsConfig[key][statusKey]) 
                     )
                 }
             }
@@ -141,7 +133,7 @@ export class InvoiceForm {
         return container;
     }
 
-    createTextInput(params = {}) {
+    createInput(params = {}) {
         const container = createElement('fieldset', 'input-container');
 
         const label = this.createLabel(params.labelName);
@@ -151,7 +143,7 @@ export class InvoiceForm {
         const errorMsg = this.createErrorMsg(params.errorMsg, 'error hidden');
 
         input.addEventListener('keyup', 
-            debounce(this.saveTextInput.bind(this), 500)
+            debounce(this.saveInput.bind(this), 500)
         );
 
         container.appendChild(label);

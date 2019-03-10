@@ -2,9 +2,7 @@ import '../styles/main.scss';
 import 'babel-polyfill';
 import { InvoiceForm } from './components/invoice-form';
 
-
-const invoiceForm = new InvoiceForm();
-
+document.addEventListener('DOMContentLoaded', () => new InvoiceForm());
 
 
 // To make hot-reloading available

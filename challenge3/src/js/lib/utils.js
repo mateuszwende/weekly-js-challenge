@@ -1,7 +1,7 @@
 export function objToArr(obj) {
     let arr = [];
-    for (let prop in obj) {
-        arr.push(obj[prop]);
+    for (const key in obj) {
+        arr.push(obj[key]);
     }
     return arr;
 }

@@ -101,7 +101,7 @@ export const invoiceInputsConfig = {
     },
     payment:
     {
-        type: 'text', 
+        type: 'number', 
         name: 'payment',
         labelName: 'Payment', 
         validation: 'number',
@@ -111,28 +111,28 @@ export const invoiceInputsConfig = {
         written: 
         {
             type: 'radio',
-            name: 'paymentStatus',
+            name: 'status',
             value: 'statusWritten',
             labelName: 'Written',
         },
         delivered: 
         {
             type: 'radio',
-            name: 'paymentStatus',
+            name: 'status',
             value: 'statusDelivered',
             labelName: 'Delivered',
         },
         paid: 
         {
             type: 'radio',
-            name: 'paymentStatus',
+            name: 'status',
             value: 'statusPaid',
             labelName: 'Paid',
         },
         delayed: 
         {
             type: 'radio',
-            name: 'paymentStatus',
+            name: 'status',
             value: 'statusDelayed',
             labelName: 'Delayed',
         }
