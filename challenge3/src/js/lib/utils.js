@@ -7,10 +7,8 @@ export function objToArr(obj) {
 }
 
 export function capitalize(str) {
-    return str
-            .split("")
-            .map((letter, i) => i === 0 ? letter.toUpperCase() : letter)
-            .join("");
+    if (typeof s !== 'string') return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export function composeDateStr(date) {
